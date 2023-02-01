@@ -21,8 +21,8 @@ object DatabaseModule {
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context) = Room.databaseBuilder(
         context, NoteDatabase::class.java, NOTE_DATABASE
-    ).allowMainThreadQueries()
-        .fallbackToDestructiveMigration()
+    ).allowMainThreadQueries() // اجرا شدن روی ترد ui
+        .fallbackToDestructiveMigration() // هندل کردن آپدیت نسخه ها
         .build()
 
     @Provides
