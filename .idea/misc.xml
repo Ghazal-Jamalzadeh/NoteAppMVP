@@ -5,6 +5,9 @@
       <map>
         <entry key="..\:/AndroidProjects/NoteAppMVP/app/src/main/res/drawable/bg_circle_white.xml" value="0.117" />
         <entry key="..\:/AndroidProjects/NoteAppMVP/app/src/main/res/layout/activity_main.xml" value="0.17074275362318841" />
+        <entry key="..\:/AndroidProjects/NoteAppMVP/app/src/main/res/layout/activity_main2.xml" value="0.17074275362318841" />
+        <entry key="..\:/AndroidProjects/NoteAppMVP/app/src/main/res/layout/empty_list.xml" value="0.17074275362318841" />
+        <entry key="..\:/AndroidProjects/NoteAppMVP/app/src/main/res/menu/menu_toolbar.xml" value="0.2" />
       </map>
     </option>
   </component>
