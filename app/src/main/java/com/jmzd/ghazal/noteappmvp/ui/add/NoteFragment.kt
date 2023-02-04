@@ -2,23 +2,36 @@ package com.jmzd.ghazal.noteappmvp.ui.add
 
 import android.R
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.jmzd.ghazal.noteappmvp.data.model.NoteEntity
+import com.jmzd.ghazal.noteappmvp.data.repository.add.AddNoteRepository
 import com.jmzd.ghazal.noteappmvp.databinding.FragmentNoteBinding
 import com.jmzd.ghazal.noteappmvp.utils.*
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-
-class NoteFragment : BottomSheetDialogFragment() {
+@AndroidEntryPoint
+class NoteFragment : BottomSheetDialogFragment(), NoteContracts.View {
 
     //Binding
-    private lateinit var binding : FragmentNoteBinding
+    private lateinit var binding: FragmentNoteBinding
+
+    @Inject
+    lateinit var entity: NoteEntity
+
+    @Inject
+    lateinit var repository: AddNoteRepository
+
+    @Inject
+    lateinit var presenter: NotePresenter
 
     //Other
+//    private val presenter by lazy { NotePresenter(repository, this) }
     private lateinit var categoriesList: Array<String>
     private var category = ""
     private lateinit var prioritiesList: Array<String>
@@ -28,8 +41,8 @@ class NoteFragment : BottomSheetDialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentNoteBinding.inflate(layoutInflater , container , false)
-        return  binding.root
+        binding = FragmentNoteBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,6 +53,18 @@ class NoteFragment : BottomSheetDialogFragment() {
             //Spinners
             categoriesSpinnerItems()
             prioritiesSpinnerItems()
+            //Save
+            saveNote.setOnClickListener {
+                val title = titleEdt.text.toString()
+                val desc = descEdt.text.toString()
+                //Entity
+                entity.id = 0
+                entity.title = title
+                entity.desc = desc
+                entity.category = category
+                entity.priority = priority
+                presenter.saveNote(entity)
+            }
         }
     }
 
@@ -49,16 +74,17 @@ class NoteFragment : BottomSheetDialogFragment() {
         val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, categoriesList)
         adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         binding.categoriesSpinner.adapter = adapter
-        binding.categoriesSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                category = categoriesList[p2]
+        binding.categoriesSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    category = categoriesList[p2]
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+
+                }
+
             }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-
-            }
-
-        }
     }
 
     private fun prioritiesSpinnerItems() {
@@ -66,16 +92,26 @@ class NoteFragment : BottomSheetDialogFragment() {
         val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, prioritiesList)
         adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         binding.prioritySpinner.adapter = adapter
-        binding.prioritySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                priority = prioritiesList[p2]
+        binding.prioritySpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    priority = prioritiesList[p2]
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+
+                }
+
             }
+    }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
+    override fun close() {
+        this.dismiss()
+    }
 
-            }
-
-        }
+    override fun onStop() {
+        super.onStop()
+        presenter.onStop()
     }
 
 }
