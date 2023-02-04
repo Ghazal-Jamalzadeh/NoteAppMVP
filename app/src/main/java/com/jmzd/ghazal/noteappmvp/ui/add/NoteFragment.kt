@@ -24,7 +24,8 @@ class NoteFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
-
+            //Close
+            closeImg.setOnClickListener { this@NoteFragment.dismiss() }
         }
     }
 

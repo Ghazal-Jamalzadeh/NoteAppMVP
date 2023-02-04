@@ -10,7 +10,47 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <!-- در نهایت به تم اصلی اپلیکین وارد میکنیم استایلی که برای باتم شیت ساختیم را -->
+        <item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialog</item>
     </style>
+
+    <!-- باتم شیتی که راحی کردیم را تزریق میکنم به تم خودم -->
+    <style name="CustomBottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/CustomBottomSheet</item>
+    </style>
+
+    <!-- استایل کلی که طراحی کردیم را میدیم به باتم شیت متریال کامپننت -->
+    <style name="CustomBottomSheet" parent="Widget.MaterialComponents.BottomSheet">
+        <!-- کلمه overlay یعنی این چیزی که داری را بیا روی اون حالت اصلیت قرار بده و حالت دیفالت خودش را میبره -->
+        <item name="shapeAppearanceOverlay">@style/CustomShapeAppearanceBottomSheetDialog</item>
+    </style>
+
+    <!--استایل کلی -->
+    <style name="CustomShapeAppearanceBottomSheetDialog" parent="">
+        <!-- rounded : دایره ای | cut : یهو میبره -->
+        <item name="cornerFamily">rounded</item>
+        <!-- کرنرها را میشه هم جدا جدا داد هم یک باره ولی ما برای پایین خب نمیخوایم -->
+        <item name="cornerSizeTopRight">20dp</item>
+        <item name="cornerSizeTopLeft">20dp</item>
+    </style>
+
+
+<!--ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ-->
+    <style name="RoundedImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">10dp</item>
+    </style>
+
+    <style name="BottomRoundedImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeBottomLeft">70dp</item>
+        <item name="cornerSizeBottomRight">70dp</item>
+    </style>
+
+    <style name="TopRoundedImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">10dp</item>
+        <item name="cornerSizeTopRight">10dp</item>
+    </style>
+
 </resources>
