@@ -8,8 +8,8 @@ import javax.inject.Inject
 
 class MainPresenter  @Inject constructor(
     private val repository: MainRepository,
-    private val view: MianContracts.View) :
-    MianContracts.Presenter, BasePresenterImpl() {
+    private val view: MainContracts.View , ) :
+    MainContracts.Presenter, BasePresenterImpl() {
 
 
     override fun loadAllNotes() {

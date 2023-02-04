@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.jmzd.ghazal.noteappmvp.R
 import com.jmzd.ghazal.noteappmvp.data.model.NoteEntity
 import com.jmzd.ghazal.noteappmvp.data.repository.main.MainRepository
 import com.jmzd.ghazal.noteappmvp.databinding.ActivityMainBinding
@@ -13,19 +12,22 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() , MianContracts.View {
+class MainActivity : AppCompatActivity() , MainContracts.View {
 
     //Binding
     private lateinit var binding: ActivityMainBinding
 
     @Inject
-    lateinit var repository: MainRepository
+    lateinit var noteAdapter: NoteAdapter
 
     @Inject
-    lateinit var presenter: MainPresenter
+    lateinit var repository: MainRepository
+
+//    @Inject
+//    lateinit var presenter: MainPresenter
 
     //Other
-    //private val presenter by lazy { MainPresenter(repository, this) }
+    private val presenter by lazy { MainPresenter(repository, this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +49,13 @@ class MainActivity : AppCompatActivity() , MianContracts.View {
     override fun showAllNotes(notes: List<NoteEntity>) {
         binding.emptyLay.visibility = View.GONE
         binding.noteList.visibility = View.VISIBLE
+
+        noteAdapter.setData(notes)
+
+        binding.noteList.apply {
+            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            adapter = noteAdapter
+        }
     }
 
     override fun showEmpty() {
