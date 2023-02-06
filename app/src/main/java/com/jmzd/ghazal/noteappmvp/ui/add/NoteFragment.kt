@@ -27,11 +27,11 @@ class NoteFragment : BottomSheetDialogFragment(), NoteContracts.View {
     @Inject
     lateinit var repository: AddNoteRepository
 
-//    @Inject
-//    lateinit var presenter: NotePresenter
+    @Inject
+    lateinit var presenter: NotePresenter
 
     //Other
-    private val presenter by lazy { NotePresenter(repository, this) }
+//    private val presenter by lazy { NotePresenter(repository, this) }
     private lateinit var categoriesList: Array<String>
     private var category = ""
     private lateinit var prioritiesList: Array<String>
