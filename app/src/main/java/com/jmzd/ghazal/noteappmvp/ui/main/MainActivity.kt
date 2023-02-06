@@ -23,11 +23,11 @@ class MainActivity : AppCompatActivity() , MainContracts.View {
     @Inject
     lateinit var repository: MainRepository
 
-//    @Inject
-//    lateinit var presenter: MainPresenter
+    @Inject
+    lateinit var presenter: MainPresenter
 
     //Other
-    private val presenter by lazy { MainPresenter(repository, this) }
+//    private val presenter by lazy { MainPresenter(repository, this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
