@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.jmzd.ghazal.noteappmvp.data.model.NoteEntity
 import com.jmzd.ghazal.noteappmvp.data.repository.main.MainRepository
 import com.jmzd.ghazal.noteappmvp.databinding.ActivityMainBinding
@@ -52,7 +53,8 @@ class MainActivity : AppCompatActivity() , MainContracts.View {
                         Toast.makeText(this@MainActivity, "edit", Toast.LENGTH_SHORT).show()
                     }
                     DELETE -> {
-                        Toast.makeText(this@MainActivity, "delete", Toast.LENGTH_SHORT).show()
+                        val noteEntity = NoteEntity(entity.id, entity.title, entity.desc, entity.category, entity.priority)
+                        presenter.deleteNote(noteEntity)
                     }
                 }
             }
@@ -75,5 +77,14 @@ class MainActivity : AppCompatActivity() , MainContracts.View {
     override fun showEmpty() {
         binding.emptyLay.visibility = View.VISIBLE
         binding.noteList.visibility = View.GONE
+    }
+
+    override fun deleteMessage() {
+        Snackbar.make(binding.root, "Note deleted", Snackbar.LENGTH_SHORT).show()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        presenter.onStop()
     }
 }

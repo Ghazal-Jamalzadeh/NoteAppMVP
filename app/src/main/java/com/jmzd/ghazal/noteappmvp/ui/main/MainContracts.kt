@@ -9,9 +9,11 @@ interface MainContracts {
     interface View{
         fun showAllNotes(notes: List<NoteEntity>)
         fun showEmpty()
+        fun deleteMessage()
     }
 
     interface Presenter : BasePresenter {
         fun loadAllNotes()
+        fun deleteNote(entity: NoteEntity)
     }
 }

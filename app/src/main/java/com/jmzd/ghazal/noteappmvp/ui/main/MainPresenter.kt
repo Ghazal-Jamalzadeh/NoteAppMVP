@@ -1,6 +1,7 @@
 package com.jmzd.ghazal.noteappmvp.ui.main
 
 import com.jmzd.ghazal.noteappmvp.base.BasePresenterImpl
+import com.jmzd.ghazal.noteappmvp.data.model.NoteEntity
 import com.jmzd.ghazal.noteappmvp.data.repository.main.MainRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -23,6 +24,15 @@ class MainPresenter  @Inject constructor(
                 } else {
                     view.showEmpty()
                 }
+            }
+    }
+
+    override fun deleteNote(entity: NoteEntity) {
+        disposable = repository.deleteNote(entity)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                view.deleteMessage()
             }
     }
 }
