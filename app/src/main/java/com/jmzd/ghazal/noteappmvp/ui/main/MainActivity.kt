@@ -3,11 +3,14 @@ package com.jmzd.ghazal.noteappmvp.ui.main
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.jmzd.ghazal.noteappmvp.data.model.NoteEntity
 import com.jmzd.ghazal.noteappmvp.data.repository.main.MainRepository
 import com.jmzd.ghazal.noteappmvp.databinding.ActivityMainBinding
 import com.jmzd.ghazal.noteappmvp.ui.add.NoteFragment
+import com.jmzd.ghazal.noteappmvp.utils.DELETE
+import com.jmzd.ghazal.noteappmvp.utils.EDIT
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -42,6 +45,17 @@ class MainActivity : AppCompatActivity() , MainContracts.View {
             //Note detail
             addNoteBtn.setOnClickListener {
                 NoteFragment().show(supportFragmentManager, NoteFragment().tag) }
+            //Clicks
+            noteAdapter.setOnListItemClickListener { entity, state ->
+                when (state) {
+                    EDIT -> {
+                        Toast.makeText(this@MainActivity, "edit", Toast.LENGTH_SHORT).show()
+                    }
+                    DELETE -> {
+                        Toast.makeText(this@MainActivity, "delete", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         }
 
     }

@@ -57,23 +57,25 @@ class NoteAdapter @Inject constructor() : RecyclerView.Adapter<NoteAdapter.ViewH
                 }
                 //Menu
                 menuImg.setOnClickListener {
-                    val popupMenu = PopupMenu(context, it)
-                    popupMenu.menuInflater.inflate(R.menu.menu_items, popupMenu.menu)
+                    val popupMenu = PopupMenu(context, it) //(context , view)
+                    popupMenu.menuInflater.inflate(R.menu.menu_items, popupMenu.menu) // (menu list , default menu appearance  )
                     popupMenu.show()
                     //Click
                     popupMenu.setOnMenuItemClickListener { menuItem ->
+                        //it : menuItem!
                         when (menuItem.itemId) {
                             R.id.itemEdit -> {
-                                onItemClickListener?.let {
+                                onPopUpMenuClicked?.let {
                                     it(item, EDIT)
                                 }
                             }
                             R.id.itemDelete -> {
-                                onItemClickListener?.let {
+                                onPopUpMenuClicked?.let {
                                     it(item, DELETE)
                                 }
                             }
                         }
+                        /*حتما این return را باید داشته باشیم اینجا که کلیک را برمیگرداند و جزو ساختار اصلی این منو هاست*/
                         return@setOnMenuItemClickListener true
                     }
                 }
@@ -81,10 +83,10 @@ class NoteAdapter @Inject constructor() : RecyclerView.Adapter<NoteAdapter.ViewH
         }
     }
 
-    private var onItemClickListener: ((NoteEntity, String) -> Unit)? = null
+    private var onPopUpMenuClicked: ((NoteEntity, String) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: (NoteEntity, String) -> Unit) {
-        onItemClickListener = listener
+    fun setOnListItemClickListener(listener: (NoteEntity, String) -> Unit) {
+        onPopUpMenuClicked = listener
     }
 
     fun setData(data: List<NoteEntity>) {
