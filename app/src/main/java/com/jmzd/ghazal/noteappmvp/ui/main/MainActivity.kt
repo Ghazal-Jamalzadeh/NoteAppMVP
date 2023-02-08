@@ -10,6 +10,7 @@ import com.jmzd.ghazal.noteappmvp.data.model.NoteEntity
 import com.jmzd.ghazal.noteappmvp.data.repository.main.MainRepository
 import com.jmzd.ghazal.noteappmvp.databinding.ActivityMainBinding
 import com.jmzd.ghazal.noteappmvp.ui.add.NoteFragment
+import com.jmzd.ghazal.noteappmvp.utils.BUNDLE_ID
 import com.jmzd.ghazal.noteappmvp.utils.DELETE
 import com.jmzd.ghazal.noteappmvp.utils.EDIT
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,7 +51,11 @@ class MainActivity : AppCompatActivity() , MainContracts.View {
             noteAdapter.setOnListItemClickListener { entity, state ->
                 when (state) {
                     EDIT -> {
-                        Toast.makeText(this@MainActivity, "edit", Toast.LENGTH_SHORT).show()
+                        val noteFragment = NoteFragment()
+                        val bundle = Bundle()
+                        bundle.putInt(BUNDLE_ID, entity.id)
+                        noteFragment.arguments = bundle
+                        noteFragment.show(supportFragmentManager, NoteFragment().tag)
                     }
                     DELETE -> {
                         val noteEntity = NoteEntity(entity.id, entity.title, entity.desc, entity.category, entity.priority)
