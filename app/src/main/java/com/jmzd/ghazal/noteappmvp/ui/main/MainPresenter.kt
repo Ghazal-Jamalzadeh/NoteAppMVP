@@ -1,8 +1,13 @@
 package com.jmzd.ghazal.noteappmvp.ui.main
 
+import androidx.appcompat.app.AlertDialog
 import com.jmzd.ghazal.noteappmvp.base.BasePresenterImpl
 import com.jmzd.ghazal.noteappmvp.data.model.NoteEntity
 import com.jmzd.ghazal.noteappmvp.data.repository.main.MainRepository
+import com.jmzd.ghazal.noteappmvp.utils.ALL
+import com.jmzd.ghazal.noteappmvp.utils.HIGH
+import com.jmzd.ghazal.noteappmvp.utils.LOW
+import com.jmzd.ghazal.noteappmvp.utils.NORMAL
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject

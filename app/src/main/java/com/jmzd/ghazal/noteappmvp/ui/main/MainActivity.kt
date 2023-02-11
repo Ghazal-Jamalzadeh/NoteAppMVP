@@ -4,15 +4,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.jmzd.ghazal.noteappmvp.R
 import com.jmzd.ghazal.noteappmvp.data.model.NoteEntity
 import com.jmzd.ghazal.noteappmvp.data.repository.main.MainRepository
 import com.jmzd.ghazal.noteappmvp.databinding.ActivityMainBinding
 import com.jmzd.ghazal.noteappmvp.ui.add.NoteFragment
-import com.jmzd.ghazal.noteappmvp.utils.BUNDLE_ID
-import com.jmzd.ghazal.noteappmvp.utils.DELETE
-import com.jmzd.ghazal.noteappmvp.utils.EDIT
+import com.jmzd.ghazal.noteappmvp.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() , MainContracts.View {
 
     //Other
 //    private val presenter by lazy { MainPresenter(repository, this) }
+    private var selectedItem = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +61,20 @@ class MainActivity : AppCompatActivity() , MainContracts.View {
                     DELETE -> {
                         val noteEntity = NoteEntity(entity.id, entity.title, entity.desc, entity.category, entity.priority)
                         presenter.deleteNote(noteEntity)
+                    }
+                }
+            }
+            //Filter
+            /*دسترسی به منوهای داخل تولبار */
+            notesToolbar.setOnMenuItemClickListener {
+                // it : MenuItem!
+                when (it.itemId) {
+                    R.id.actionFilter -> {
+                        filterByPriority()
+                        return@setOnMenuItemClickListener true
+                    }
+                    else -> {
+                        return@setOnMenuItemClickListener false
                     }
                 }
             }
@@ -91,5 +106,29 @@ class MainActivity : AppCompatActivity() , MainContracts.View {
     override fun onStop() {
         super.onStop()
         presenter.onStop()
+    }
+
+    private fun filterByPriority() {
+        /* همیشه بین کتابخانه ساپورت و androidX از androidX استفاده کنید */
+        val builder = AlertDialog.Builder(this)
+
+        val priories = arrayOf(ALL, HIGH, NORMAL, LOW)
+
+        builder.setSingleChoiceItems(priories, selectedItem) { dialog, item ->
+            when (item) {
+                0 -> {
+                    presenter.loadAllNotes()
+                }
+                in 1..3 -> {
+                    presenter.filterNote(priories[item])
+                }
+            }
+
+            selectedItem = item
+            dialog.dismiss()
+        }
+
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
     }
 }
