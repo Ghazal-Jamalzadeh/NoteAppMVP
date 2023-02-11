@@ -35,4 +35,18 @@ class MainPresenter  @Inject constructor(
                 view.deleteMessage()
             }
     }
+
+    override fun filterNote(priority: String) {
+        disposable  = repository.filterNote(priority)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                //it: List<NoteEntity>
+                if (it.isNotEmpty()) {
+                    view.showAllNotes(it)
+                } else {
+                    view.showEmpty()
+                }
+            }
+    }
 }

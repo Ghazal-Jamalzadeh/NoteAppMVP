@@ -15,5 +15,6 @@ interface MainContracts {
     interface Presenter : BasePresenter {
         fun loadAllNotes()
         fun deleteNote(entity: NoteEntity)
+        fun filterNote(priority : String)
     }
 }
