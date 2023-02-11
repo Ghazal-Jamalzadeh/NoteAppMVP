@@ -2,9 +2,11 @@ package com.jmzd.ghazal.noteappmvp.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.jmzd.ghazal.noteappmvp.R
@@ -43,6 +45,8 @@ class MainActivity : AppCompatActivity() , MainContracts.View {
 
         //initViews
         binding.apply {
+            //Set action view
+            setSupportActionBar(notesToolbar)
             //Load all notes
             presenter.loadAllNotes()
             //Note detail
@@ -80,6 +84,40 @@ class MainActivity : AppCompatActivity() , MainContracts.View {
             }
         }
 
+    }
+
+    /*هندل کردن سرچ*/
+    /*آیتم های داخل تولبار در واقع آپشن منو محسوب میشن */
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        /* موارد مربوط به منومون رو بهمون میده ولی اول باید منوی مورد نظرمون رو بهش بشناسونیم  */
+        menuInflater.inflate(R.menu.menu_toolbar, menu)
+        /* دسترسی به آیتم های منو با ایدی */
+        val search = menu.findItem(R.id.actionSearch)
+        /*
+        * زمانی که منو را میساختیم اومدیم خ زیر را در فابل منو اضافه کردیم
+        * app:actionViewClass="androidx.appcompat.widget.SearchView"
+        * و از سرچ ویو ارث بری کن که حالت باز و بسته شدن را بتونه داشته باشه
+        * پس باید آیتم بالا را تبدیل به سرچ ویو کنیم که به مواردش دسترسی داشته باشیم
+        * */
+        val searchView = search.actionView as SearchView
+        /* هینت قرار دادن برای سرچ ویو */
+        searchView.queryHint = getString(R.string.search)
+        /* انجام سرچ به ازای هر کاراکتر وارد شده توسط کاربر */
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+            /* زمانی که کاربر روی دکمه اینتر کیبورد کلیک میکنه */
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
+
+            /* به ازای تک تک حروفی که کاربر وارد میکنه */
+            override fun onQueryTextChange(newText: String): Boolean {
+                presenter.searchNote(newText)
+                return true
+            }
+        })
+
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun showAllNotes(notes: List<NoteEntity>) {
