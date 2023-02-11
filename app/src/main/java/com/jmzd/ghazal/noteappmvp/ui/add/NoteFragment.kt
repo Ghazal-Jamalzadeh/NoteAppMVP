@@ -126,16 +126,38 @@ class NoteFragment : BottomSheetDialogFragment(), NoteContracts.View {
             }
     }
 
+    private fun getIndex(list: Array<String>, item: String): Int {
+        var index = 0
+
+        /*
+        * اگه جاوا بود یک for مینوشتیم از ۰ تا سایز لیست و پیمایش میکردیم
+        * برای کاتلین هم احتمالا از این کد استفاده میکردید
+        * for (i in 0 unit list.size)
+        * کد پایین هم دقیقا معادل دو تا کد بالاست ولی کوتاه تر و حرفه ای تر
+        * */
+
+        for (i in list.indices) {
+            if (list[i] == item) {
+                index = i
+                break
+            }
+        }
+        return index
+    }
+
     override fun close() {
         this.dismiss()
     }
 
     override fun loadNote(note: NoteEntity) {
+        //#100
         if (this.isAdded) {
             requireActivity().runOnUiThread {
                 binding.apply {
                     titleEdt.setText(note.title)
                     descEdt.setText(note.desc)
+                    categoriesSpinner.setSelection(getIndex(categoriesList, note.category))
+                    prioritySpinner.setSelection(getIndex(prioritiesList, note.priority))
                 }
             }
         }
