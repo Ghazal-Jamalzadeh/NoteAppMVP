@@ -36,6 +36,8 @@ class NoteFragment : BottomSheetDialogFragment(), NoteContracts.View {
     private var category = ""
     private lateinit var prioritiesList: Array<String>
     private var priority = ""
+    private var noteId = 0
+    private var type = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,12 +49,26 @@ class NoteFragment : BottomSheetDialogFragment(), NoteContracts.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //Bundle
+        noteId = arguments?.getInt(BUNDLE_ID) ?: 0
+        //Type
+        type = if (noteId > 0) {
+            EDIT
+        } else {
+            NEW
+        }
+
         binding.apply {
             //Close
             closeImg.setOnClickListener { this@NoteFragment.dismiss() }
             //Spinners
             categoriesSpinnerItems()
             prioritiesSpinnerItems()
+            //Set default value
+            if (type == EDIT) {
+                presenter.detailNote(noteId)
+            }
             //Save
             saveNote.setOnClickListener {
                 val title = titleEdt.text.toString()
@@ -107,6 +123,17 @@ class NoteFragment : BottomSheetDialogFragment(), NoteContracts.View {
 
     override fun close() {
         this.dismiss()
+    }
+
+    override fun loadNote(note: NoteEntity) {
+        if (this.isAdded) {
+            requireActivity().runOnUiThread {
+                binding.apply {
+                    titleEdt.setText(note.title)
+                    descEdt.setText(note.desc)
+                }
+            }
+        }
     }
 
     override fun onStop() {
