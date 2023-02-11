@@ -54,4 +54,18 @@ class MainPresenter  @Inject constructor(
                 }
             }
     }
+
+    override fun searchNote(title: String) {
+        disposable  = repository.searchNote(title)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                //it: List<NoteEntity>
+                if (it.isNotEmpty()) {
+                    view.showAllNotes(it)
+                } else {
+                    view.showEmpty()
+                }
+            }
+    }
 }
