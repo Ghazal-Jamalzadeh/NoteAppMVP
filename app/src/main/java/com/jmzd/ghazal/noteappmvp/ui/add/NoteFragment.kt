@@ -74,12 +74,17 @@ class NoteFragment : BottomSheetDialogFragment(), NoteContracts.View {
                 val title = titleEdt.text.toString()
                 val desc = descEdt.text.toString()
                 //Entity
-                entity.id = 0
+//                entity.id = 0
+                entity.id = noteId
                 entity.title = title
                 entity.desc = desc
                 entity.category = category
                 entity.priority = priority
-                presenter.saveNote(entity)
+                if (type == NEW) {
+                    presenter.saveNote(entity)
+                } else {
+                    presenter.updateNote(entity)
+                }
             }
         }
     }

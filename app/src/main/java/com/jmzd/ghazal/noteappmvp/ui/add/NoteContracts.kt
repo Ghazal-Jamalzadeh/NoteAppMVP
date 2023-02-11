@@ -15,5 +15,6 @@ interface NoteContracts {
     interface Presenter : BasePresenter {
         fun saveNote(entity: NoteEntity)
         fun detailNote(id : Int )
+        fun updateNote(note : NoteEntity)
     }
 }
